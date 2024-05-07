@@ -5,6 +5,7 @@ from streamlit_lottie import st_lottie
 import pandas as pd
 import re
 import nltk
+import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -13,6 +14,13 @@ import joblib
 from sklearn.metrics import accuracy_score, classification_report
 from torch.utils.data import DataLoader, TensorDataset
 import pickle
+import csv
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+
+#file = pd.read_csv(r"C:\Users\kkbmu\OneDrive\Desktop\mini project\Code\disaster-tweet-classifier-userinterface\ui streamlit\isodataset.swift")
+
 st.set_page_config(page_title='Disaster Tweet Detection',page_icon=':tada:',layout='wide')
 
 # Download NLTK resources
@@ -79,7 +87,7 @@ if selected=="Search":
             box-sizing: border-box;
             margin-top: 6px;
             margin-bottom: 16px;
-            color: white; /* Set your desired text color */
+            color: white; 
             resize: vertical
             font-family: Arial, sans-serif;
             font-size: 16px; 
@@ -110,6 +118,37 @@ if selected=="Search":
         pred = finalmodel.predict(text_transformed)
         return pred[0]
 
+
+    def extract_location(text):
+    # Process the input sentence using SpaCy
+        doc = nlp(text)
+        # Extract named entities and filter for locations
+        locations = [ent.text for ent in doc.ents if ent.label_ == "GPE"]  # "GPE" is the label for geopolitical entities
+        return locations
+
+
+    def get_emergency_numbers(loc_address):
+        with open('isodataset.csv', mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Country'] == loc_address:
+                    st.text("EMERGENCY NUMBERS:")
+                    st.write(
+                        f"Police  : {row['Police']}    \n"
+                        f"Ambulance: {row['Ambulance']}    \n"
+                        f"Fire: {row['Fire']}    "
+                    )
+                    return
+            st.text("Emergency Contact not found!")
+
+
+
+
+
+
+
+
+
     # Create a text input for entering the tweet
     tweet_text = st.text_input("Enter the tweet:",placeholder="Search...")
     if st.button('Submit'):
@@ -118,13 +157,21 @@ if selected=="Search":
             prediction = predict(text_transformed)
             if prediction == 1:
                 st.error('This is a disaster tweet.')
+                loc_address = extract_location(tweet_text)
+                if loc_address:
+                    loc_address = loc_address[0].strip("[]").capitalize()
+                    get_emergency_numbers(loc_address)
+                else:
+                    st.warning('Location not found.')
             else:
                 st.success('This is not a disaster tweet.')
         else:
             st.warning('Please enter a tweet to predict.')
 
+    
+        # Look up emergency numbers for the given location 
 
-
+   
 def local_css(file_name):
         with open(file_name) as f:
             st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
@@ -157,5 +204,6 @@ def local_css(file_name):
         st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
         
 local_css("style.css")
+
 
 
