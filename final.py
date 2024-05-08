@@ -14,7 +14,7 @@ from sklearn.metrics import accuracy_score, classification_report
 import pickle
 
 # Data is loaded
-data = pd.read_csv(r"C:\Users\kkbmu\OneDrive\Desktop\mini project\Code\train2.csv")
+data = pd.read_csv(r"C:\Users\ASUS\Desktop\New folder\disaster-tweet-classifier\train2.csv")
 
 '''Here URLs,non-alphanumeric characters and whitespaces are removed. The cleaned text is then tokenised. 
    Stop words are removed from those tokens and then lemmatised. lemmatised tokens are then joined and returned.'''
