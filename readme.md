@@ -3,8 +3,7 @@
 
 ## Overview
 
-The Disaster Tweet Recognizer project utilizes Machine Learning (ML) and Natural Language Processing (NLP) techniques to classify tweets as either genuinely related to disasters or not. This project aims to improve the efficiency of disaster management by automatically filtering relevant tweets from a large volume of social media data.
-
+The Disaster Tweet Recognizer project utilizes Machine Learning (ML) and Natural Language Processing (NLP) techniques to classify tweets as either genuinely related to disasters or not. This project aims to improve the efficiency of disaster management by automatically filtering relevant tweets from a large volume of social media data. Uses a disaster dataset from Kaggle. 
 Additionally, the project includes a user-friendly web application built with Streamlit, allowing users to input tweets and get immediate classification results.
 
 ## Features
