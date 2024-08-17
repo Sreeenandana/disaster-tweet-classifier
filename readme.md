@@ -71,4 +71,3 @@ Additionally, the project includes a user-friendly web application built with St
 
 ---
 
-Feel free to adjust the content based on the actual structure and details of your project.
